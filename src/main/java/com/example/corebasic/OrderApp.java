@@ -3,10 +3,8 @@ package com.example.corebasic;
 import com.example.corebasic.member.Grade;
 import com.example.corebasic.member.Member;
 import com.example.corebasic.member.MemberService;
-import com.example.corebasic.member.MemberServiceImpl;
 import com.example.corebasic.order.Order;
 import com.example.corebasic.order.OrderService;
-import com.example.corebasic.order.OrderServiceImpl;
 
 /**
  * 사실 여기서 테스트 하는 것은 좋지 않다.
@@ -14,8 +12,9 @@ import com.example.corebasic.order.OrderServiceImpl;
  */
 public class OrderApp {
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
-        OrderService orderService = new OrderServiceImpl();
+        AppConfig appConfig = new AppConfig();
+        MemberService memberService = appConfig.memberService();
+        OrderService orderService = appConfig.orderService();
 
         Long memberId = 1L;
         Member member = new Member(memberId, "memberA", Grade.VIP);

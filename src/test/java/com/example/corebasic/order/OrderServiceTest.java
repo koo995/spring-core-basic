@@ -1,17 +1,25 @@
 package com.example.corebasic.order;
 
+import com.example.corebasic.AppConfig;
 import com.example.corebasic.member.Grade;
 import com.example.corebasic.member.Member;
 import com.example.corebasic.member.MemberService;
-import com.example.corebasic.member.MemberServiceImpl;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class OrderServiceTest {
 
-    MemberService memberService = new MemberServiceImpl();
-    OrderService orderService = new OrderServiceImpl();
+    MemberService memberService;
+    OrderService orderService;
+
+    @BeforeEach
+    public void beforeEach() {
+        AppConfig appConfig = new AppConfig();
+        memberService = appConfig.memberService();
+        orderService = appConfig.orderService();
+    }
 
     @DisplayName("주문생성")
     @Test
