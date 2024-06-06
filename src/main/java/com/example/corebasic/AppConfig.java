@@ -1,7 +1,7 @@
 package com.example.corebasic;
 
 import com.example.corebasic.discount.DiscountPolicy;
-import com.example.corebasic.discount.FixDiscountPolicy;
+import com.example.corebasic.discount.RateDiscountPolicy;
 import com.example.corebasic.member.MemberRepository;
 import com.example.corebasic.member.MemberService;
 import com.example.corebasic.member.MemberServiceImpl;
@@ -26,7 +26,7 @@ public class AppConfig {
     }
 
     public DiscountPolicy discountPolicy() {
-        return new FixDiscountPolicy();
+        return new RateDiscountPolicy();
     }
 
     public MemberRepository memberRepository() {
