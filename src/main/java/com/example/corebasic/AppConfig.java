@@ -8,7 +8,10 @@ import com.example.corebasic.member.MemberServiceImpl;
 import com.example.corebasic.member.MemoryMemberRepository;
 import com.example.corebasic.order.OrderService;
 import com.example.corebasic.order.OrderServiceImpl;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class AppConfig {
 
     /**
@@ -17,18 +20,22 @@ public class AppConfig {
      * 리팩토링으로 어떤 장점이 있냐면 메서드 명을 보면 역할과 구현클래스가 한눈에 다 들어난다. 중복도 제거하였다.
      * 애플리케이션 전체 설계를 한눈에 알 수 있다.
      */
+    @Bean
     public MemberService memberService() {
         return new MemberServiceImpl(memberRepository());
     }
 
+    @Bean
     public OrderService orderService() {
         return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
+    @Bean
     public DiscountPolicy discountPolicy() {
         return new RateDiscountPolicy();
     }
 
+    @Bean
     public MemberRepository memberRepository() {
         return new MemoryMemberRepository();
     }
