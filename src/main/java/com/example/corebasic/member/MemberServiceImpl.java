@@ -1,0 +1,19 @@
+package com.example.corebasic.member;
+
+/**
+ * 관례상 구현클래스가 하나만 있으면 뒤에서 Impl 을 붙여준다.
+ */
+public class MemberServiceImpl implements MemberService{
+
+    private final MemberRepository memberRepository = new MemoryMemberRepository();
+
+    @Override
+    public void join(Member member) {
+        memberRepository.save(member);
+    }
+
+    @Override
+    public Member findMember(Long memberId) {
+        return memberRepository.findById(memberId);
+    }
+}
