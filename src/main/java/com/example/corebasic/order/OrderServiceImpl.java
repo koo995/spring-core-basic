@@ -1,14 +1,12 @@
 package com.example.corebasic.order;
 
 import com.example.corebasic.discount.DiscountPolicy;
-import com.example.corebasic.discount.FixDiscountPolicy;
 import com.example.corebasic.member.Member;
 import com.example.corebasic.member.MemberRepository;
-import com.example.corebasic.member.MemoryMemberRepository;
 
 public class OrderServiceImpl implements OrderService {
 
-    private final MemberRepository memberRepository = new MemoryMemberRepository();
+    private final MemberRepository memberRepository;
     /**
      * 우리는 역할과 구현을 충실하게 분리했다.
      * 다형성도 활용하고, 인터페이스와 구현 객체를 분리했다.
@@ -22,6 +20,11 @@ public class OrderServiceImpl implements OrderService {
      * 누군가가 구현체를 넣어줘야 한다. -> AppConfig(관심사의 분리를 위해 공연 기확자를 만든다)
      */
     private final DiscountPolicy discountPolicy;
+
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     /**
      * 단일 책임 원칙을 잘 지키고 있다.
