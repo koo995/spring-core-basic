@@ -1,10 +1,9 @@
 package com.example.corebasic.beanDefinition;
 
-import com.example.corebasic.AppConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.GenericXmlApplicationContext;
 
 public class BeanDefinitionTest {
 
@@ -12,7 +11,7 @@ public class BeanDefinitionTest {
      * 참고로 왜 ApplicationContext 가 아니라 AnnotationConfigApplicationContext 로 했냐면?
      * getBeanDefinition() 메서드가 AnnotationConfigApplicationContext 여기 정의되어있기 때문이다.
      */
-    AnnotationConfigApplicationContext ac = new AnnotationConfigApplicationContext(AppConfig.class);
+    GenericXmlApplicationContext ac = new GenericXmlApplicationContext("appConfig.xml");
 
     /**
      * 스프링이 다양한 형태의 설정 정보를 beanDefinition 으로 추상화해서 사용하는 것 정도만 이해하면 된다.
