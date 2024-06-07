@@ -31,8 +31,8 @@ public class ConfigurationSingletonTest {
         System.out.println("orderService -> memberRepository = " + memberRepository2);
         System.out.println("memberRepository = " + memberRepository);
 
-        Assertions.assertThat(memberService.getMemberRepository()).isNotSameAs(memberRepository);
-        Assertions.assertThat(orderService.getMemberRepository()).isNotSameAs(memberRepository);
+        Assertions.assertThat(memberService.getMemberRepository()).isSameAs(memberRepository);
+        Assertions.assertThat(orderService.getMemberRepository()).isSameAs(memberRepository);
     }
 
     @DisplayName("Configuration Deep Test")
@@ -42,13 +42,15 @@ public class ConfigurationSingletonTest {
         AppConfig appConfigBean = ac.getBean(AppConfig.class);
 
         /**
-         * @Configuration을 제거하였더니 순수한 AppConfig.class 가 나온다.
-         * 실제로 스프링 빈으로는 등록되었으나... 싱글톤이 깨지는 것을 볼 수 있다.
-         * memberRepository() 가 3번 호출되는 것을 볼 수 있다.
-         * 1번은 @Bean 에 의해 스프링 빈에 등록하기 위함이고,
-         * 나머지는 각각 memberService(), orderService() 에서 호출하기 때문이다.
-         * 지금은 생짜로 호출하여... memberService(), orderService() 에서 호출한 녀석은 스프링 컨테이너가 관리하는 녀석이 아니다.
-         * 그냥 하나의 객체를 생성한 것이다.
+         * getClass() 호출하면 클래스 타입이 나온다.
+         * AppConfig$$SpringCGLIB$$0
+         * 내가 만든 클래스가 아니다.
+         * AppConfig 라는 클래스를 상속받은
+         * 임의의 다른 클래스를 만들어서(스프링이 CGLIB 라는 바이트코드 조작 라이브러리 이용하여) 그 클래스를 스프링이 내부에서 사용하는 것이다.
+         * @Bean 이 붙은 메서드마다 이미 스프링 빈이 존재하면 존재하는 빈을 반환하고, 스프링 빈이 없으면 생성해서 스프링 빈으로 등록하고 반환하는 코드가 동적으로 만들어진다.
+         * 이 덕분에 싱글톤이 보장되도록 해준다.
+         * @Configuration 을 붙이면 바이트 코드를 조작하는 CGLIB 기술을 사용해서 싱글톤을 보장하지만, 만약 @Bean 만 적용하면 어떻게 될까? (@Configuration 을 안 붙이면?)
+         * @Bean 만 적용하면 싱글톤을 보장하지 않는다. 그냥 스프링 빈으로 등록되는 것이다.
          */
         System.out.println("appConfigBean = " + appConfigBean.getClass());
     }

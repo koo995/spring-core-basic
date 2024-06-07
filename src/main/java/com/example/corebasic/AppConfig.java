@@ -9,7 +9,9 @@ import com.example.corebasic.member.MemoryMemberRepository;
 import com.example.corebasic.order.OrderService;
 import com.example.corebasic.order.OrderServiceImpl;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class AppConfig {
 
     /**
