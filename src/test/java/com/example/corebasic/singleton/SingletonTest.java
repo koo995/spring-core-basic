@@ -5,6 +5,7 @@ import com.example.corebasic.member.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 public class SingletonTest {
@@ -29,5 +30,22 @@ public class SingletonTest {
 
         // memberService1 != memberService2
         assertNotSame(memberService1, memberService2);
+    }
+
+    @DisplayName("싱글톤 패턴을 적용한 객체 사용")
+    @Test
+    void singletonServiceTest() throws Exception {
+        SingletonService singletonService1 = SingletonService.getInstance();
+        SingletonService singletonService2 = SingletonService.getInstance();
+
+        System.out.println("singletonService1 = " + singletonService1);
+        System.out.println("singletonService2 = " + singletonService2);
+
+        /**
+         * same 은 == 비교
+         * equal 은 equals 비교
+         * 여기서는 인스턴스를 비교할 것이기 때문에 same 을 사용한다.
+         */
+        assertThat(singletonService1).isSameAs(singletonService2);
     }
 }
