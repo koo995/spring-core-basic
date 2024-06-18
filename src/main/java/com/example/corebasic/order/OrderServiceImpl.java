@@ -3,7 +3,6 @@ package com.example.corebasic.order;
 import com.example.corebasic.discount.DiscountPolicy;
 import com.example.corebasic.member.Member;
 import com.example.corebasic.member.MemberRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,8 +15,9 @@ public class OrderServiceImpl implements OrderService {
      * @Autowired 는 타입 매칭을 시도하고, 이때 여러 빈이 있으면 필드이름, 파라미터 이름으로 빈 이름을 추가 매칭한다.
      * @Qualifier 은 생성자, 수정자, 필드 모두에 사용가능하다. 그런데 만약 못찾으면? 정해진 이름의 빈을 추가로 찾는다.
      * 하지만 @Qualifier 은 @Qualifier 을 찾는 용도로만 사용하는게 명확하고 좋다.
+     * @Primary 는 기본값처럼 동작하고 @Qualifier 은 매우 상세하게 동작한다. 만약 두개가 겹치면 @Qualifier 가 작동한다.
      */
-    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("mainDiscountPolicy") DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }

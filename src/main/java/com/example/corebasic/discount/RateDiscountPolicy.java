@@ -2,14 +2,16 @@ package com.example.corebasic.discount;
 
 import com.example.corebasic.member.Grade;
 import com.example.corebasic.member.Member;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
- * @Qualifier 는 추가 구분자를 붙여주는 방법이다. 주입시 추가적인 방법을 제공하는 것이지 빈 이름을 변경하는 것은 아니다.
+ * @Primary 얘가 우선순위가 최상위로 잡혀서 의존관계 주입이 될 것이다.
+ * 생각보다 많이 쓰인다. @Qualifier 은 지저분하게 많이 붙여야 한다.
+ * 예를 들어 메인데이터베이스 보조 데이터베이스를 사용할때 룰을 정해서 쓰기도 한다
  */
 @Component
-@Qualifier("mainDiscountPolicy")
+@Primary
 public class RateDiscountPolicy implements DiscountPolicy{
 
     private final int discountPercent = 10;
