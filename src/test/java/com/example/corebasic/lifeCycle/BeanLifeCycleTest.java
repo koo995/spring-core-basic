@@ -32,7 +32,14 @@ public class BeanLifeCycleTest {
     @Configuration
     static class LifeCycleConfig {
 
-        @Bean
+        /**
+         * 아주 특별한 기능이 있다.
+         * 외부 라이브러리의 종료 메서드가 주로 close 또는 shutdown 인데
+         * destroyMethod 의 기본값이 (inferred) 으로 등록되어 있다.
+         * 이 추론 기능은 close, shutdown 라는 이름의 메서드를 자동으로 호출해준다. 이름 그대로 종료메서드를 추론해서 호출해준다.
+         * 추론 기능을 사용하기 싫으면 빈 공백을 지정하면 된다.
+         */
+        @Bean(initMethod = "init", destroyMethod = "close")
         public NetworkClient networkClient() {
             NetworkClient networkClient = new NetworkClient();
             networkClient.setUrl("http://hello-spring.dev");
