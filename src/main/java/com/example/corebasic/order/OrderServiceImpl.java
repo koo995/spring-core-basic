@@ -9,21 +9,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderServiceImpl implements OrderService {
 
-    /**
-     * final 키워드가 있으면 값이 반드시 있어야 한다. 언어적으로 필수적으로 초기화를 제한할 수 있다.
-     */
-    private final MemberRepository memberRepository;
-    private final DiscountPolicy discountPolicy;
+    private MemberRepository memberRepository;
+    private DiscountPolicy discountPolicy;
 
     /**
-     * 생성자 주입의 특정.
-     *     1. 생성자 호출시점에 딱 1번만 호출되는 것이 보장된다. -> 한번 세팅된 후 그 이후 변경되는 것을 막을 수 있다.
-     *     2. 불변, 필수 의존관계에 사용
-     *     3. 생성자가 딱 1개만 있다면, @Autowired 을 생략할 수 있다. -> ex) 기본생성자가 더 있으면 생략불가
+     * 생성자 주입은 빈을 등록하면서 의존관계가 주입이 일어난다.
+     * setter 은 빈 등록 후 의존관계가 주입된다.
+     * 특징? 1. 선택적이다. 즉, 변경 가능성이 있는 의존관계에 사용
      */
     @Autowired
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public void setMemberRepository(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
+    }
+
+    @Autowired
+    public void setDiscountPolicy(DiscountPolicy discountPolicy) {
         this.discountPolicy = discountPolicy;
     }
 
