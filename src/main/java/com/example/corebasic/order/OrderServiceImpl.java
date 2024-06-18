@@ -1,5 +1,6 @@
 package com.example.corebasic.order;
 
+import com.example.corebasic.annotation.MainDiscountPolicy;
 import com.example.corebasic.discount.DiscountPolicy;
 import com.example.corebasic.member.Member;
 import com.example.corebasic.member.MemberRepository;
@@ -17,7 +18,7 @@ public class OrderServiceImpl implements OrderService {
      * 하지만 @Qualifier 은 @Qualifier 을 찾는 용도로만 사용하는게 명확하고 좋다.
      * @Primary 는 기본값처럼 동작하고 @Qualifier 은 매우 상세하게 동작한다. 만약 두개가 겹치면 @Qualifier 가 작동한다.
      */
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
