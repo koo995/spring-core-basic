@@ -2,8 +2,8 @@ package com.example.corebasic.common;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
-import lombok.Setter;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
@@ -12,15 +12,20 @@ import java.util.UUID;
  * 동시에 여러 http 요청이 오면 정확히 어떤 요청이 남긴 로그인지 구분하기 어렵다.
  * 이럴때 사용하기 딱 좋은 것이 바로 request 스코프이다.
  * http 요청 당 하나씩 생성되고, http 요청이 끝나는 시점에 소멸된다.
+ * 프록시 객체를 만들게 된다. 가짜를 주입해 준다.
  */
 @Component
-@Scope(value = "request")
+@Scope(value = "request", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class MyLogger {
 
     private String uuid;
 
-    @Setter
     private String requestURL;
+
+    public void setRequestURL(String requestURL) {
+        System.out.println("MyLogger = " + this.getClass());
+        this.requestURL = requestURL;
+    }
 
     public void log(String message) {
         System.out.println("[" + uuid + "]" + "[" + requestURL + "] " + message);
