@@ -3,8 +3,8 @@ package com.example.corebasic.scope;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
 
@@ -29,6 +29,8 @@ public class SingletonWithPrototypeTest1 {
      * 프로토타입 빈을 사용한다는 것은 사용할때 그냥 계속 새로 만들어서 쓰고 싶어서 쓰는거지 이런 경우면 그냥 싱글톤을 쓰는것과 다를 바 없다.
      * 그러면 어떻게 해야할까? 제일 무식한 방법은 ac 을 주입받아서 매번 요청하는 것이다.
      * 하지만 너무 지저분하다... 너무 스프링에 의존적이다.
+     * 이러한 방식은 의존관계를 외부에서 주입 받는게 아니라 이렇게 직접 필요한 의존관계를 찾는 것을 Dependency Lookup 이라 한다.
+     * provider 을 사용하는 방법으로 서로 다른 prototypeBean 을 가져오는 것을 볼 수 있다. 하지만 이녀석도 스프링에 의존적이다.
      */
     @Test
     void singletonClientUsePrototype() {
@@ -44,11 +46,12 @@ public class SingletonWithPrototypeTest1 {
 
     @Scope("singleton")
     static class ClientBean {
+
         @Autowired
-        ApplicationContext ac;
+        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
 
         public int logic() {
-            PrototypeBean prototypeBean = ac.getBean(PrototypeBean.class);
+            PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
             prototypeBean.addCount();
             return prototypeBean.getCount();
         }
