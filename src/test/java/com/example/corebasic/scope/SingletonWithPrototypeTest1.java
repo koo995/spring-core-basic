@@ -2,8 +2,8 @@ package com.example.corebasic.scope;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
+import jakarta.inject.Provider;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -31,6 +31,13 @@ public class SingletonWithPrototypeTest1 {
      * 하지만 너무 지저분하다... 너무 스프링에 의존적이다.
      * 이러한 방식은 의존관계를 외부에서 주입 받는게 아니라 이렇게 직접 필요한 의존관계를 찾는 것을 Dependency Lookup 이라 한다.
      * provider 을 사용하는 방법으로 서로 다른 prototypeBean 을 가져오는 것을 볼 수 있다. 하지만 이녀석도 스프링에 의존적이다.
+     * JSR-330 을 사용하는 것은 자바의 표준이다. 딱 필요한 dl 정도의 기능만 제공한다. 장점이자 단점이다. 별도의 라이브러리가 필요하다는 장점
+     * 스프링이 아닌 컨테이너에서도 사용가능하다는 장점. 두개의 provider 중에 상황에 따라 편한 것을 쓰면 된다.
+     * 그러면 프로토타입 빈을 언제 사용할까? 실무에서는 대부분 싱글톤으로 해결이 된다. 프로토타입빈 사용은 굉장히 드물다.
+     * 언제 사용하면 좋냐면
+     * 1. lazy or optional retrieval of an instance
+     * 2. breaking circular dependencies (순환참조)
+     * 3. 프로토타입?
      */
     @Test
     void singletonClientUsePrototype() {
@@ -48,10 +55,10 @@ public class SingletonWithPrototypeTest1 {
     static class ClientBean {
 
         @Autowired
-        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
+        private Provider<PrototypeBean> prototypeBeanProvider;
 
         public int logic() {
-            PrototypeBean prototypeBean = prototypeBeanProvider.getObject();
+            PrototypeBean prototypeBean = prototypeBeanProvider.get();
             prototypeBean.addCount();
             return prototypeBean.getCount();
         }
